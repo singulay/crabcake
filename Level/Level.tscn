@@ -2,21 +2,20 @@
 
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Camera2D.gd" type="Script" id=2]
-[ext_resource path="res://sprites/placeholder.png" type="Texture" id=3]
+[ext_resource path="res://objects/crab.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Level/Level.gd" type="Script" id=4]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 577, 256 )
+position = Vector2( 230, 130 )
 current = true
 limit_left = 0
 script = ExtResource( 2 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 391, 256 )
+position = Vector2( 243, 127 )
 
-[node name="placeholder" type="Sprite" parent="."]
-position = Vector2( 194, 194 )
-texture = ExtResource( 3 )
+[node name="crab" parent="." instance=ExtResource( 3 )]
+position = Vector2( 343, 77 )
