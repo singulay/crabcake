@@ -13,14 +13,26 @@ var dodge_timer
 var dodge_timeout = 0.2
 var last_dodge = 0
 
+var throw_timer = 0
+var throw_time = 0.8
+
 var items = []
 var active_state = ["default"]
 var passive_state = ["default"]
 var allowed_active_states = ["default", "attack", "dodge"]
-var allowed_passive_states = ["default", "damage", "dead"]
-var velocity
+var allowed_passive_states = ["default", "damage", "dead", "throw"]
+var velocity = Vector2()
 enum {north, east, south, west}
 
+var dir
+var throw_acc = 0
+var throw_strength = 250
+export var deacc = 400
+
+var damage_timer = 0
+var damage_time = 0.8
+
+signal screen_shake
 
 func enter(state):
 	match state:
@@ -32,7 +44,15 @@ func enter(state):
 			print("dodge!")
 			last_dodge = dodge_timeout
 			dodge_timer = dodge_time
-			
+		"throw":
+			print("ahhhhh")
+			throw_timer = throw_time
+			velocity = -dir*throw_strength
+			emit_signal("screen_shake")
+		"damage":
+			print("that's a lotta damage")
+			damage_timer = damage_time
+			#emit_signal("screen_shake")
 func leave(state):
 	match state:
 		"attack":
@@ -82,13 +102,37 @@ func execute_passive(delta):
 	var state = passive_state[0]
 	match state:
 		"default":
+			get_input()
 			if Input.is_action_pressed("attack"):
 				if last_attack <= 0: # check if timeout is over
 					push_active("attack")
 			if Input.is_action_pressed("dodge"):
 				if last_dodge <= 0:
 					push_active("dodge")
-		
+			for i in get_slide_count():
+				var collision = get_slide_collision(i)
+				if collision.collider.name == "crab":
+					dir = (collision.collider.position - position).normalized()
+					#print(collision.collider.position)
+					push_passive("throw")
+		"throw":
+			throw_timer -= delta
+			velocity -= velocity.normalized()*delta*deacc
+			if throw_timer <= 0:
+				pop_passive()
+				push_passive("damage")	
+		"damage":
+			damage_timer -= delta
+			if damage_timer <= 0:
+				pop_passive()
+			get_input()
+			if Input.is_action_pressed("attack"):
+				if last_attack <= 0: # check if timeout is over
+					push_active("attack")
+			if Input.is_action_pressed("dodge"):
+				if last_dodge <= 0:
+					push_active("dodge")
+					
 func push_passive(state):
 	if state in allowed_passive_states:
 		if state != passive_state[0]:
@@ -124,7 +168,8 @@ func _ready():
 
 
 func _physics_process(delta):
-	get_input()
+	
 	move_and_slide(velocity)
 	execute_active(delta)
 	execute_passive(delta)
+	
