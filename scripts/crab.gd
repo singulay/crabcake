@@ -1,14 +1,28 @@
 extends KinematicBody2D
 
 var distance
+var flower_distance
+var player_distance
+var damage_taken = 0
 var velocity = Vector2()
 var movement_speed = 100
 var animation_speed = 2.5
+
+var dmg = 10
+
 const texture1 = preload("res://sprites/crabbody.png")
 const texture2 = preload("res://sprites/crabbody2.png")
 
 const explosion = preload("res://effects/Explosion.tscn")
 const cracks = preload("res://effects/cracks.tscn")
+
+var wait_timer = 0
+var wait_time = 0.5
+
+
+var flower
+var flower_dist
+
 
 var state = ["idle"]
 var allowed_states = ["attack", "walk", "idle", "throw", "dead"]
@@ -33,7 +47,7 @@ var updown = 1
 var flip_time = 1
 var flip_timer = 0
 signal screen_shake
-signal spawn_attack(pos, type)
+signal spawn_attack(pos)
 signal heavy_attack(rect)
 var throw_force = 250
 var throw_timer = 0
@@ -44,6 +58,8 @@ var deacc = 400
 var damage_timer = 0
 var damage_time = 0.2
 
+signal crab_death
+
 func push(new_state):
 	if new_state in allowed_states:
 		if new_state != state[0]:
@@ -52,7 +68,7 @@ func push(new_state):
 			
 	
 func pop():
-	if state.size() > 0:
+	if state.size() > 1:
 		leave(state[0])
 		state.pop_front()
 		reenter(state[0])
@@ -60,6 +76,8 @@ func pop():
 func execute(delta):
 	var current_state = state[0]
 	match current_state:
+		"dead":
+			pass
 		"idle":
 			if hp <= 0:
 				push("dead")
@@ -74,14 +92,15 @@ func execute(delta):
 				last_attack -= delta
 			if heavy_timer >= 0:
 				heavy_timer -= delta
-			if distance.length() > 20:
-				velocity = distance.normalized() * movement_speed
-				push("walk")
-			else:
-				velocity = Vector2()
-				if state[0] == "idle":
-					if last_attack <= 0:
-						push("attack")
+			if wait_timer <= 0:
+				if distance.length() > 20:
+					velocity = distance.normalized() * movement_speed
+					push("walk")
+				else:
+					velocity = Vector2()
+					if state[0] == "idle":
+						if last_attack <= 0:
+							push("attack")
 				
 		"walk":
 			if damage_timer >= 0:
@@ -173,7 +192,8 @@ func enter(new_state):
 		"dead":
 			visible = true
 			print("It's dead.")
-			dead = true	
+			dead = true
+			emit_signal("crab_death")
 func leave(old_state):
 	match old_state:
 		"throw":
@@ -188,13 +208,29 @@ func reenter(old_state):
 
 
 func _ready():
+	flower = get_parent().get_node("flower")
 	pass
 
 func get_input():
 	#velocity = Vector2()
 	
-	distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
 	
+	flower_distance = flower.position - position - updown * Vector2(0, 10)
+	player_distance = get_parent().get_node("player").position - position - updown * Vector2(0, 25)
+	
+	
+	
+	if goal == "player":
+		if player_distance.length() > 200:
+			goal = "flower"
+			damage_taken = 0
+	if goal == "flower":
+		if damage_taken >= 20:
+			goal = "player"
+			pop()
+			wait_timer = wait_time
+		
+	distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
 	#if Input.is_action_pressed('ui_right'):
 	#	velocity.x += 1
 	#if Input.is_action_pressed('ui_left'):
@@ -206,6 +242,9 @@ func get_input():
 	
 				
 func _physics_process(delta):
+	print(wait_timer)
+	if wait_timer > 0:
+		wait_timer -= delta
 	move_and_slide(velocity)
 	if not dead:
 		
@@ -275,7 +314,7 @@ func spawn_explosion(animation : String):
 	
 	if animation == "attack2u":
 		boom.position = $claw4.position + Vector2(0, -8)	
-	emit_signal("spawn_attack", boom.position + position, "small")		
+	emit_signal("spawn_attack", boom.position + position)		
 	add_child(boom)
 
 func spawn_cracks():
@@ -297,6 +336,6 @@ func _on_player_attack_hit(pos):
 	if state[0] == "idle" or state[0] == "attack" or state[0] == "walk" or state[0] == "throw":
 		if (pos - position).length() < 50:
 			damage_timer = damage_time
-			hp -= 10
-			print(hp)
+			hp -= dmg
+			damage_taken += dmg
 		

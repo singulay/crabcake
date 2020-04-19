@@ -5,7 +5,7 @@ var movement_speed = 200
 
 var attack_time = 0.1
 var attack_timer
-var attack_timeout = 0.1
+var attack_timeout = 0.5
 var last_attack = 0
 
 var block_time = 0.4
@@ -47,6 +47,8 @@ signal screen_shake
 signal block_success
 
 signal attack_hit(pos)
+
+signal player_death
 
 func enter(state):
 	match state:
@@ -142,6 +144,7 @@ func execute_passive(delta):
 					#print(collision.collider.position)
 					if active_state[0] != "block":
 						push_passive("damage")
+						hp -= 10
 						push_passive("throw")
 					else:
 						if dir.x > 0 and face == east:
@@ -152,6 +155,7 @@ func execute_passive(delta):
 							emit_signal("block_success")
 						else:
 							blocked = false
+							hp -= 10
 							push_passive("damage")
 							push_passive("throw")
 		"throw":
@@ -234,27 +238,29 @@ func _physics_process(delta):
 	move_and_slide(velocity)
 	execute_active(delta)
 	execute_passive(delta)
-	
+	if hp <= 0:
+		emit_signal("player_death")
 
 
-func _on_crab_spawn_attack(pos, type):
-	if type == "small":
-		if (position-pos).length() < 50:
-			if passive_state[0] == "default":
-				if active_state[0] != "block":
+func _on_crab_spawn_attack(pos):
+
+	if (position-pos).length() < 50:
+		if passive_state[0] == "default":
+			if active_state[0] != "block":
+				hp -= 10
+				push_passive("damage")
+				emit_signal("screen_shake")
+			else: # rework this!
+				if (position-pos).y < 0 and face == south:
+					blocked = true
+					emit_signal("block_success")
+				elif (position-pos).y > 0 and face == north:
+					blocked = true
+					emit_signal("block_success")
+				else:
 					hp -= 10
 					push_passive("damage")
 					emit_signal("screen_shake")
-				else: # rework this!
-					if (position-pos).y < 0 and face == south:
-						blocked = true
-						emit_signal("block_success")
-					elif (position-pos).y > 0 and face == north:
-						blocked = true
-						emit_signal("block_success")
-					else:
-						push_passive("damage")
-						emit_signal("screen_shake")
 
 
 
@@ -264,3 +270,6 @@ func _on_crab_heavy_attack(rect):
 			hp -= 25
 			push_passive("damage")
 			push_passive("throw")
+
+func _on_potion_heal():
+	hp += 15
