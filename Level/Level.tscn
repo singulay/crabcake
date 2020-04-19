@@ -18,10 +18,10 @@ script = ExtResource( 2 )
 shake_magnitude = Vector2( 2, 2 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 243, 127 )
+position = Vector2( 248, 120 )
 
 [node name="crab" parent="." instance=ExtResource( 3 )]
-position = Vector2( 343, 77 )
+position = Vector2( 352, 72.0502 )
 
 [node name="Wall" parent="." instance=ExtResource( 5 )]
 position = Vector2( 8, 72.0502 )
@@ -36,5 +36,8 @@ position = Vector2( 8, 104 )
 stream = ExtResource( 6 )
 volume_db = -24.423
 autoplay = true
+[connection signal="block_success" from="player" to="crab" method="_on_player_block_success"]
 [connection signal="screen_shake" from="player" to="Camera2D" method="_on_player_screen_shake"]
+[connection signal="heavy_attack" from="crab" to="player" method="_on_crab_heavy_attack"]
 [connection signal="screen_shake" from="crab" to="Camera2D" method="_on_crab_screen_shake"]
+[connection signal="spawn_attack" from="crab" to="player" method="_on_crab_spawn_attack"]

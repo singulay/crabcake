@@ -8,7 +8,7 @@
 resource_name = "attack1"
 step = 0.02
 tracks/0/type = "value"
-tracks/0/path = NodePath("crableg3:offset")
+tracks/0/path = NodePath("claw1:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -46,36 +46,8 @@ tracks/2/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "attack1u"
-step = 0.02
-tracks/0/type = "value"
-tracks/0/path = NodePath("crableg3:offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 3.86375, 6.72716, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -1, -6 ), Vector2( -1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("body:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.08, 0.44, 0.74, 0.84 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
-}
-
 [sub_resource type="Animation" id=2]
-resource_name = "attack2"
+resource_name = "attack1u"
 step = 0.02
 tracks/0/type = "value"
 tracks/0/path = NodePath("body:offset")
@@ -90,14 +62,55 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("crableg6:offset")
+tracks/1/path = NodePath("claw3:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 2, 1 ),
+"transitions": PoolRealArray( 1, 1, 3.4822, 6.49801, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -1, -6 ), Vector2( -1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.94 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "attack1u" ],
+"method": "spawn_explosion"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+step = 0.02
+tracks/0/type = "value"
+tracks/0/path = NodePath("body:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.08, 0.44, 0.74, 0.84 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("claw2:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 2, 6.27667 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 1, -6 ), Vector2( 1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
 }
@@ -116,7 +129,7 @@ tracks/2/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 resource_name = "attack2u"
 step = 0.02
 tracks/0/type = "value"
@@ -132,7 +145,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("crableg6:offset")
+tracks/1/path = NodePath("claw4:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -143,45 +156,60 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 1, -6 ), Vector2( 1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
 }
-
-[sub_resource type="Animation" id=3]
-resource_name = "double attack"
-step = 0.02
-tracks/0/type = "value"
-tracks/0/path = NodePath("crableg3:offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 3.86375, 2, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -1, -6 ), Vector2( -1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("body:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.08, 0.44, 0.74, 0.84 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("crableg6:offset")
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 2, 1 ),
+"times": PoolRealArray( 0.94 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "attack2u" ],
+"method": "spawn_explosion"
+} ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "double_attack"
+length = 2.0
+step = 0.02
+tracks/0/type = "value"
+tracks/0/path = NodePath("claw1:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 1.78, 1.88, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 1, -6 ), Vector2( 1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( -1, -4 ), Vector2( -1, -4 ), Vector2( 0, 4 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("claw2:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 1.78, 1.88, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1, -4 ), Vector2( 1, -4 ), Vector2( 0, 4 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("body:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.6, 1.76, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, -2 ), Vector2( 0, 1 ) ]
 }
 tracks/3/type = "method"
 tracks/3/path = NodePath(".")
@@ -190,7 +218,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.96 ),
+"times": PoolRealArray( 1.88 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -198,47 +226,62 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "double attacku"
+[sub_resource type="Animation" id=11]
+resource_name = "double_attacku"
+length = 2.0
 step = 0.02
 tracks/0/type = "value"
-tracks/0/path = NodePath("crableg3:offset")
+tracks/0/path = NodePath("body:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 3.86375, 2, 1 ),
+"times": PoolRealArray( 0, 0.6, 1.76, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -1, -6 ), Vector2( -1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, -2 ), Vector2( 0, 1 ) ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("body:offset")
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.08, 0.44, 0.74, 0.84 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ), Vector2( 0, -2 ) ]
+"times": PoolRealArray( 1.88 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_cracks"
+} ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("crableg6:offset")
+tracks/2/path = NodePath("claw3:offset")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2, 0.9, 0.96, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 2, 1 ),
+"times": PoolRealArray( 0, 0.3, 1.78, 1.88, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 1, -6 ), Vector2( 1, -6 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( -1, -4 ), Vector2( -1, -4 ), Vector2( 0, 4 ), Vector2( 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("claw4:offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 1.78, 1.88, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1, -4 ), Vector2( 1, -4 ), Vector2( 0, 4 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=7]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("crableg1:offset")
@@ -265,7 +308,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("crableg3:offset")
+tracks/2/path = NodePath("claw1:offset")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -301,7 +344,7 @@ tracks/4/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("crableg6:offset")
+tracks/5/path = NodePath("claw2:offset")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -324,8 +367,56 @@ tracks/6/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ) ]
 }
+tracks/7/type = "value"
+tracks/7/path = NodePath("claw3:offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("claw4:offset")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("crableg7:offset")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("crableg8:offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=8]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("body:offset")
@@ -364,7 +455,7 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("crableg3:offset")
+tracks/3/path = NodePath("claw1:offset")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -400,7 +491,7 @@ tracks/5/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("crableg6:offset")
+tracks/6/path = NodePath("claw2:offset")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -411,10 +502,58 @@ tracks/6/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
 }
+tracks/7/type = "value"
+tracks/7/path = NodePath("crableg7:offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("crableg8:offset")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0.1, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("claw3:offset")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0.1, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("claw4:offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -3, -3 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="CapsuleShape2D" id=9]
-radius = 27.4493
-height = 5.56718
+radius = 19.4047
+height = 22.2119
 
 [node name="crab" type="KinematicBody2D"]
 position = Vector2( 182.662, 121.945 )
@@ -434,11 +573,10 @@ position = Vector2( -22.1183, 3.05025 )
 z_index = 1
 texture = ExtResource( 2 )
 
-[node name="crableg3" type="Sprite" parent="."]
+[node name="claw1" type="Sprite" parent="."]
 position = Vector2( -17.49, 13.6458 )
 z_index = 2
 texture = ExtResource( 2 )
-offset = Vector2( 0, 3 )
 
 [node name="crableg4" type="Sprite" parent="."]
 position = Vector2( 21.7329, -5.17088 )
@@ -450,29 +588,49 @@ position = Vector2( 24.3715, 0.993401 )
 z_index = 1
 texture = ExtResource( 2 )
 
-[node name="crableg6" type="Sprite" parent="."]
+[node name="claw2" type="Sprite" parent="."]
 position = Vector2( 21.3334, 13.9233 )
 z_index = 2
 texture = ExtResource( 2 )
-offset = Vector2( 0, 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "attack1"
 playback_default_blend_time = 0.15
 anims/attack1 = SubResource( 1 )
-anims/attack1u = SubResource( 6 )
-anims/attack2 = SubResource( 2 )
-anims/attack2u = SubResource( 7 )
-"anims/double attack" = SubResource( 3 )
-"anims/double attacku" = SubResource( 8 )
-anims/idle = SubResource( 4 )
-anims/walks = SubResource( 5 )
+anims/attack1u = SubResource( 2 )
+anims/attack2 = SubResource( 3 )
+anims/attack2u = SubResource( 4 )
+anims/double_attack = SubResource( 10 )
+anims/double_attacku = SubResource( 11 )
+anims/idle = SubResource( 7 )
+anims/walks = SubResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.27739, 0.219116 )
+position = Vector2( 0.554779, 2.16083 )
 rotation = 1.5708
 shape = SubResource( 9 )
-__meta__ = {
-"_edit_group_": true
-}
+
+[node name="claw3" type="Sprite" parent="."]
+position = Vector2( -20.8042, -6.65735 )
+z_index = -2
+texture = ExtResource( 2 )
+offset = Vector2( -0.756322, -3.8069 )
+
+[node name="claw4" type="Sprite" parent="."]
+position = Vector2( 21.6364, -5.2704 )
+z_index = -2
+texture = ExtResource( 2 )
+offset = Vector2( 0.333333, 2.86102e-06 )
+
+[node name="crableg7" type="Sprite" parent="."]
+visible = false
+position = Vector2( -17.7133, 13.7776 )
+z_index = 2
+texture = ExtResource( 2 )
+
+[node name="crableg8" type="Sprite" parent="."]
+visible = false
+position = Vector2( 21.359, 14.1469 )
+z_index = 2
+texture = ExtResource( 2 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

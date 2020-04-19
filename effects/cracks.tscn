@@ -1,14 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://sprites/crack_Animation 1_3.png" type="Texture" id=1]
 [ext_resource path="res://sprites/crack_Animation 1_1.png" type="Texture" id=2]
 [ext_resource path="res://sprites/crack_Animation 1_2.png" type="Texture" id=3]
 [ext_resource path="res://sprites/crack_Animation 1_0.png" type="Texture" id=4]
 [ext_resource path="res://effects/AnimatedSprite.gd" type="Script" id=5]
+[ext_resource path="res://sprites/crack_Animation 1_4.png" type="Texture" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 1 ) ],
+"frames": [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 6 ) ],
 "loop": true,
 "name": "default",
 "speed": 10.0
@@ -16,7 +17,7 @@ animations = [ {
 
 [node name="cracks" type="AnimatedSprite"]
 frames = SubResource( 1 )
-frame = 2
+frame = 3
 playing = true
 script = ExtResource( 5 )
 [connection signal="animation_finished" from="." to="." method="_on_cracks_animation_finished"]
