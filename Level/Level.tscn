@@ -36,6 +36,7 @@ position = Vector2( 8, 104 )
 stream = ExtResource( 6 )
 volume_db = -24.423
 autoplay = true
+[connection signal="attack_hit" from="player" to="crab" method="_on_player_attack_hit"]
 [connection signal="block_success" from="player" to="crab" method="_on_player_block_success"]
 [connection signal="screen_shake" from="player" to="Camera2D" method="_on_player_screen_shake"]
 [connection signal="heavy_attack" from="crab" to="player" method="_on_crab_heavy_attack"]

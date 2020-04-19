@@ -11,9 +11,13 @@ const explosion = preload("res://effects/Explosion.tscn")
 const cracks = preload("res://effects/cracks.tscn")
 
 var state = ["idle"]
-var allowed_states = ["attack", "walk", "idle", "throw"]
+var allowed_states = ["attack", "walk", "idle", "throw", "dead"]
 
+var hp = 200
+var dead = false
 var flipped = false
+
+
 
 var attacks = ["attack1", "attack2", "double_attack"]
 var attacks2 = ["attack1u", "attack2u", "double_attacku"]
@@ -37,6 +41,9 @@ var throw_time = 1.2
 var dir
 var deacc = 400
 
+var damage_timer = 0
+var damage_time = 0.2
+
 func push(new_state):
 	if new_state in allowed_states:
 		if new_state != state[0]:
@@ -54,8 +61,13 @@ func execute(delta):
 	var current_state = state[0]
 	match current_state:
 		"idle":
+			if hp <= 0:
+				push("dead")
 			get_input()
 			
+			if damage_timer >= 0:
+				damage_timer -= delta
+
 			$AnimationPlayer.current_animation = "idle"
 			$AnimationPlayer.playback_speed = animation_speed
 			if last_attack >= 0:
@@ -72,6 +84,11 @@ func execute(delta):
 						push("attack")
 				
 		"walk":
+			if damage_timer >= 0:
+				damage_timer -= delta
+			
+			if hp <= 0:
+				push("dead")
 			get_input()
 			if last_attack >= 0:
 				last_attack -= delta
@@ -99,6 +116,8 @@ func execute(delta):
 			elif velocity.y < 0 and distance.length() > 50:
 				flip("up", delta)
 		"attack":
+			if damage_timer >= 0:
+				damage_timer -= delta
 			attack_timer -= delta
 			if attack_timer <= 0:
 				#pop()
@@ -106,11 +125,14 @@ func execute(delta):
 			velocity = Vector2()
 		
 		"throw":
+			if damage_timer >= 0:
+				damage_timer -= delta
 			$AnimationPlayer.current_animation = "idle"
 			velocity -= velocity.normalized()*delta*deacc
 			throw_timer -= delta
 			if throw_timer <= 0:
 				pop()
+				
 func enter(new_state):
 	match new_state:
 		"attack":
@@ -148,7 +170,10 @@ func enter(new_state):
 			throw_timer = throw_time
 			dir = (position - get_parent().get_node("player").position).normalized()
 			velocity = dir * throw_force
-			
+		"dead":
+			visible = true
+			print("It's dead.")
+			dead = true	
 func leave(old_state):
 	match old_state:
 		"throw":
@@ -181,9 +206,18 @@ func get_input():
 	
 				
 func _physics_process(delta):
-	print($AnimationPlayer.current_animation)
 	move_and_slide(velocity)
-	
+	if not dead:
+		
+		if damage_timer > 0:
+			if fmod(stepify(damage_timer, 0.1)*10, 2) == 0:
+				
+				visible = false
+			else:
+				visible = true
+		else:
+			visible = true
+
 	execute(delta)
 
 
@@ -256,3 +290,13 @@ func _on_player_block_success():
 	pop()
 	push("throw")
 	pass # Replace with function body.
+
+
+func _on_player_attack_hit(pos):
+	
+	if state[0] == "idle" or state[0] == "attack" or state[0] == "walk" or state[0] == "throw":
+		if (pos - position).length() < 50:
+			damage_timer = damage_time
+			hp -= 10
+			print(hp)
+		

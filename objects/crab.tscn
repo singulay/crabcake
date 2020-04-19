@@ -171,7 +171,7 @@ tracks/2/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=5]
 resource_name = "double_attack"
 length = 2.0
 step = 0.02
@@ -226,7 +226,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=6]
 resource_name = "double_attacku"
 length = 2.0
 step = 0.02
@@ -592,6 +592,7 @@ texture = ExtResource( 2 )
 position = Vector2( 21.3334, 13.9233 )
 z_index = 2
 texture = ExtResource( 2 )
+offset = Vector2( 0, 2.25 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "attack1"
@@ -600,8 +601,8 @@ anims/attack1 = SubResource( 1 )
 anims/attack1u = SubResource( 2 )
 anims/attack2 = SubResource( 3 )
 anims/attack2u = SubResource( 4 )
-anims/double_attack = SubResource( 10 )
-anims/double_attacku = SubResource( 11 )
+anims/double_attack = SubResource( 5 )
+anims/double_attacku = SubResource( 6 )
 anims/idle = SubResource( 7 )
 anims/walks = SubResource( 8 )
 

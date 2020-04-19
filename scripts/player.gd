@@ -3,7 +3,7 @@ extends KinematicBody2D
 var hp = 100
 var movement_speed = 200
 
-var attack_time = 0.5
+var attack_time = 0.1
 var attack_timer
 var attack_timeout = 0.1
 var last_attack = 0
@@ -17,6 +17,7 @@ var blocked = false
 
 var throw_timer = 0
 var throw_time = 0.8
+
 
 var items = []
 var active_state = ["default"]
@@ -38,15 +39,23 @@ export var deacc = 400
 var damage_timer = 0
 var damage_time = 0.3
 
+var can_attack = true
 
+var faces = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 
 signal screen_shake
 signal block_success
+
+signal attack_hit(pos)
+
 func enter(state):
 	match state:
 		"attack":
+			velocity = Vector2()
+			#$sprite.animation = "attack" + str(face)
 			last_attack = attack_timeout
 			attack_timer = attack_time
+			emit_signal("attack_hit", position + faces[face])
 		"block":
 			velocity = Vector2()
 			$sprite.animation = "block" + str(face)
@@ -114,18 +123,21 @@ func execute_passive(delta):
 			$sprite.modulate = Color(1, 1, 1, 1)
 			if not Input.is_action_pressed("block"):
 				can_block = true
+			if not Input.is_action_pressed("attack"):
+				can_attack = true
 			if active_state[0] == "default":
 				get_input()
 				if Input.is_action_pressed("attack"):
-					if last_attack <= 0: # check if timeout is over
+					if last_attack <= 0 and can_attack: # check if timeout is over
 						push_active("attack")
+						can_attack = false
 				if Input.is_action_pressed("block"):
 					if last_block <= 0 and can_block:
 						can_block = false
 						push_active("block")
 			for i in get_slide_count():
 				var collision = get_slide_collision(i)
-				if collision.collider.name == "crab":
+				if collision.collider.name == "crab" and not get_parent().get_node("crab").dead:
 					dir = (collision.collider.position - position).normalized()
 					#print(collision.collider.position)
 					if active_state[0] != "block":
@@ -163,8 +175,9 @@ func execute_passive(delta):
 			if active_state[0] == "default":
 				get_input()
 				if Input.is_action_pressed("attack"):
-					if last_attack <= 0: # check if timeout is over
+					if last_attack <= 0 and can_attack: # check if timeout is over
 						push_active("attack")
+						can_attack = false
 				if Input.is_action_pressed("block"):
 					if last_block <= 0 and can_block:
 						can_block = false
@@ -229,10 +242,10 @@ func _on_crab_spawn_attack(pos, type):
 		if (position-pos).length() < 50:
 			if passive_state[0] == "default":
 				if active_state[0] != "block":
+					hp -= 10
 					push_passive("damage")
 					emit_signal("screen_shake")
 				else: # rework this!
-					print((position-pos).y)
 					if (position-pos).y < 0 and face == south:
 						blocked = true
 						emit_signal("block_success")
@@ -248,5 +261,6 @@ func _on_crab_spawn_attack(pos, type):
 func _on_crab_heavy_attack(rect):
 	if rect.has_point(position):
 		if passive_state[0] == "default":
+			hp -= 25
 			push_passive("damage")
 			push_passive("throw")
