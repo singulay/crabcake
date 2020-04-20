@@ -1,10 +1,26 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
-[ext_resource path="res://main menu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://title.png" type="Texture" id=3]
 
 [node name="game" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
 
-[node name="MarginContainer" parent="." instance=ExtResource( 2 )]
+[node name="title" type="Sprite" parent="."]
+position = Vector2( 240, 140 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 39.5368
+margin_top = 114.771
+margin_right = 157.537
+margin_bottom = 179.771
+text = "WASD to move
+J to attack
+K to block
+Protect the flower!"
+__meta__ = {
+"_edit_use_anchors_": false
+}

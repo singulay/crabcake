@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Camera2D.gd" type="Script" id=2]
@@ -16,7 +16,6 @@
 [ext_resource path="res://sprites/flower_frame.png" type="Texture" id=14]
 [ext_resource path="res://Level/heal.gd" type="Script" id=15]
 [ext_resource path="res://sfx/346116__lulyc__retro-game-heal-sound.wav" type="AudioStream" id=16]
-[ext_resource path="res://Level/flower2.gd" type="Script" id=17]
 [ext_resource path="res://sfx/382310__myfox14__game-over-arcade.wav" type="AudioStream" id=18]
 [ext_resource path="res://sprites/dirt.png" type="Texture" id=19]
 [ext_resource path="res://objects/Wall_left.tscn" type="PackedScene" id=20]
@@ -133,7 +132,6 @@ position = Vector2( 352, 248 )
 
 [node name="flower2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 18 )
-script = ExtResource( 17 )
 
 [node name="potiontimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -809,13 +807,12 @@ texture = ExtResource( 19 )
 [connection signal="player_death" from="player" to="." method="_on_player_player_death"]
 [connection signal="screen_shake" from="player" to="Camera2D" method="_on_player_screen_shake"]
 [connection signal="crab_death" from="crab" to="." method="_on_crab_crab_death"]
-[connection signal="heavy_attack" from="crab" to="player" method="_on_crab_heavy_attack"]
 [connection signal="heavy_attack" from="crab" to="flower" method="_on_crab_heavy_attack"]
+[connection signal="heavy_attack" from="crab" to="player" method="_on_crab_heavy_attack"]
 [connection signal="screen_shake" from="crab" to="Camera2D" method="_on_crab_screen_shake"]
-[connection signal="spawn_attack" from="crab" to="player" method="_on_crab_spawn_attack"]
 [connection signal="spawn_attack" from="crab" to="flower" method="_on_crab_spawn_attack"]
+[connection signal="spawn_attack" from="crab" to="player" method="_on_crab_spawn_attack"]
 [connection signal="flower_death" from="flower" to="." method="_on_flower_flower_death"]
-[connection signal="flower_death" from="flower" to="flower2" method="_on_flower_flower_death"]
 [connection signal="timeout" from="potiontimer" to="." method="_on_potiontimer_timeout"]
 [connection signal="timeout" from="gameover" to="." method="_on_gameover_timeout"]
 [connection signal="timeout" from="gamewin" to="." method="_on_gamewin_timeout"]

@@ -11,3 +11,5 @@ func _process(delta):
 func _input(event):
 	if event is InputEventKey and event.pressed:
 			get_tree().change_scene("res://Level/Level.tscn")
+	if event is InputEventJoypadButton and event.pressed:
+			get_tree().change_scene("res://Level/Level.tscn")
