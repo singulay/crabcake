@@ -48,7 +48,7 @@ var heavy_timer = 0
 
 var goal = "player"
 var updown = 1
-var flip_time = 1
+var flip_time = 0.3
 var flip_timer = 0
 signal screen_shake
 signal spawn_attack(pos)
@@ -141,9 +141,9 @@ func execute(delta):
 			if velocity.length() == 0:
 				pop()
 			
-			if velocity.y > 0 and distance.length() > 50:
+			if velocity.y > 0 and distance.length() > 30:
 				flip("down", delta)
-			elif velocity.y < 0 and distance.length() > 50:
+			elif velocity.y < 0 and distance.length() > 30:
 				flip("up", delta)
 		"attack":
 			if display_hp <= 0:
@@ -249,6 +249,10 @@ func get_input():
 				goal = "player"
 				pop()
 				wait_timer = wait_time
+			if player_distance.length() < 60:
+				var i = randi()%10
+				if i == 0:
+					goal = "player"
 			
 		distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
 	#if Input.is_action_pressed('ui_right'):

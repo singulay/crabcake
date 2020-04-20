@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/397147__ava-music-group__ava-instinct-whoosh-bang-stampede.wav-ec3b0412354099b00ef8f6b815146d26.sample"
+
+[deps]
+
+source_file="res://sfx/397147__ava-music-group__ava-instinct-whoosh-bang-stampede.wav"
+dest_files=[ "res://.import/397147__ava-music-group__ava-instinct-whoosh-bang-stampede.wav-ec3b0412354099b00ef8f6b815146d26.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
