@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/health_bg.png" type="Texture" id=1]
+[ext_resource path="res://sprites/health_empty.png" type="Texture" id=2]
+[ext_resource path="res://sprites/health_full.png" type="Texture" id=3]
+[ext_resource path="res://objects/GUI.gd" type="Script" id=4]
+
+[node name="GUI" type="MarginContainer"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0
+margin_top = -46.0
+margin_bottom = 18.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bar" type="VBoxContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 436.0
+margin_bottom = 44.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Bar"]
+margin_right = 416.0
+
+[node name="Gauge" type="TextureProgress" parent="Bar"]
+margin_top = 4.0
+margin_right = 416.0
+margin_bottom = 24.0
+texture_under = ExtResource( 1 )
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 3 )

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bleh.wav-884b64ce0986e598c09126a6cdbdc2f8.sample"
+
+[deps]
+
+source_file="res://sfx/bleh.wav"
+dest_files=[ "res://.import/bleh.wav-884b64ce0986e598c09126a6cdbdc2f8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

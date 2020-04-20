@@ -27,7 +27,11 @@ var flower_dist
 var state = ["idle"]
 var allowed_states = ["attack", "walk", "idle", "throw", "dead"]
 
-var hp = 200
+var max_hp = 200
+var hp = max_hp
+var display_hp = hp
+var hp_speed = 20
+
 var dead = false
 var flipped = false
 
@@ -77,16 +81,20 @@ func execute(delta):
 	var current_state = state[0]
 	match current_state:
 		"dead":
-			pass
+			velocity = Vector2()
+			if $AnimationPlayer.current_animation == "walks":
+				$AnimationPlayer.current_animation = "death"
 		"idle":
-			if hp <= 0:
+			if display_hp <= 0:
+				pop()
+				pop()
 				push("dead")
 			get_input()
 			
 			if damage_timer >= 0:
 				damage_timer -= delta
-
-			$AnimationPlayer.current_animation = "idle"
+			if display_hp > 0:
+				$AnimationPlayer.current_animation = "idle"
 			$AnimationPlayer.playback_speed = animation_speed
 			if last_attack >= 0:
 				last_attack -= delta
@@ -106,9 +114,13 @@ func execute(delta):
 			if damage_timer >= 0:
 				damage_timer -= delta
 			
-			if hp <= 0:
+			if display_hp <= 0:
+				pop()
+				pop()
+				velocity = Vector2()
 				push("dead")
-			get_input()
+			if display_hp > 0:
+				get_input()
 			if last_attack >= 0:
 				last_attack -= delta
 			if heavy_timer >= 0:
@@ -119,7 +131,6 @@ func execute(delta):
 					push("walk")
 			else:
 				velocity = Vector2()
-			
 			if velocity.x > 0:
 				# move right
 				$AnimationPlayer.current_animation = "walks"
@@ -135,6 +146,10 @@ func execute(delta):
 			elif velocity.y < 0 and distance.length() > 50:
 				flip("up", delta)
 		"attack":
+			if display_hp <= 0:
+				pop()
+				pop()
+				push("dead")
 			if damage_timer >= 0:
 				damage_timer -= delta
 			attack_timer -= delta
@@ -144,6 +159,10 @@ func execute(delta):
 			velocity = Vector2()
 		
 		"throw":
+			if display_hp <= 0:
+				pop()
+				pop()
+				push("dead")
 			if damage_timer >= 0:
 				damage_timer -= delta
 			$AnimationPlayer.current_animation = "idle"
@@ -157,9 +176,9 @@ func enter(new_state):
 		"attack":
 			if last_attack <= 0:
 				if updown > 0:
-					if distance.length() < 30 and distance.length() > 15:
+					if distance.length() < 30 and distance.length() > 25:
 						$AnimationPlayer.current_animation = attacks[randi()%(attacks2.size()-1)]
-					if distance.length() <= 15:
+					if distance.length() <= 25:
 						var att
 						if heavy_timer <= 0:
 							att = randi()%attacks.size()
@@ -170,9 +189,9 @@ func enter(new_state):
 							attack_timer = 2
 						$AnimationPlayer.current_animation = attacks[att]#"attack1"
 				else:
-					if distance.length() < 30 and distance.length() > 15:
+					if distance.length() < 30 and distance.length() > 25:
 						$AnimationPlayer.current_animation = attacks2[randi()%(attacks2.size()-1)]
-					if distance.length() <= 15:
+					if distance.length() <= 25:
 						var att
 						if heavy_timer <= 0:
 							att = randi()%attacks2.size()
@@ -190,10 +209,11 @@ func enter(new_state):
 			dir = (position - get_parent().get_node("player").position).normalized()
 			velocity = dir * throw_force
 		"dead":
+			$AnimationPlayer.current_animation = "death"
 			visible = true
-			print("It's dead.")
 			dead = true
-			emit_signal("crab_death")
+			$deadtime.start()
+			
 func leave(old_state):
 	match old_state:
 		"throw":
@@ -218,19 +238,19 @@ func get_input():
 	flower_distance = flower.position - position - updown * Vector2(0, 10)
 	player_distance = get_parent().get_node("player").position - position - updown * Vector2(0, 25)
 	
-	
-	
-	if goal == "player":
-		if player_distance.length() > 200:
-			goal = "flower"
-			damage_taken = 0
-	if goal == "flower":
-		if damage_taken >= 20:
-			goal = "player"
-			pop()
-			wait_timer = wait_time
+	if state[0] != "dead":
 		
-	distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
+		if goal == "player":
+			if player_distance.length() > 100:
+				goal = "flower"
+				damage_taken = 0
+		if goal == "flower":
+			if damage_taken >= 20:
+				goal = "player"
+				pop()
+				wait_timer = wait_time
+			
+		distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
 	#if Input.is_action_pressed('ui_right'):
 	#	velocity.x += 1
 	#if Input.is_action_pressed('ui_left'):
@@ -240,9 +260,16 @@ func get_input():
 	#if Input.is_action_pressed('ui_up'):
 	#	velocity.y -= 1
 	
+func attack1_audio():
+	$attack1.play()
+func attack2_audio():
+	$attack2.play()
 				
 func _physics_process(delta):
-	print(wait_timer)
+	if hp <= 0:
+		push("death")
+	if display_hp != hp:
+		display_hp -= delta*hp_speed*sign(display_hp - hp)
 	if wait_timer > 0:
 		wait_timer -= delta
 	move_and_slide(velocity)
@@ -268,7 +295,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name in attacks2:
 		if state[0] == "attack":
 			pop()
-
+	if anim_name == "death":
+		emit_signal("crab_death")
 
 func flip(direction, delta):
 	if flip_timer <= 0:
@@ -334,8 +362,16 @@ func _on_player_block_success():
 func _on_player_attack_hit(pos):
 	
 	if state[0] == "idle" or state[0] == "attack" or state[0] == "walk" or state[0] == "throw":
-		if (pos - position).length() < 50:
+		if (pos - position).length() < 65:
 			damage_timer = damage_time
 			hp -= dmg
+			$damage.play()
 			damage_taken += dmg
 		
+
+
+func _on_deadtime_timeout():
+	emit_signal("crab_death")
+
+func death_sound():
+	$death.play()

@@ -1,6 +1,11 @@
 extends KinematicBody2D
 
-var hp = 100
+
+var max_hp = 100
+var hp = max_hp
+var display_hp = hp
+var hp_speed = 20
+
 var movement_speed = 200
 
 var attack_time = 0.1
@@ -18,6 +23,7 @@ var blocked = false
 var throw_timer = 0
 var throw_time = 0.8
 
+var dead_timer = 0
 
 var items = []
 var active_state = ["default"]
@@ -49,10 +55,12 @@ signal block_success
 signal attack_hit(pos)
 
 signal player_death
+signal hit
 
 func enter(state):
 	match state:
 		"attack":
+			$attack.play()
 			velocity = Vector2()
 			#$sprite.animation = "attack" + str(face)
 			last_attack = attack_timeout
@@ -69,8 +77,16 @@ func enter(state):
 			velocity = -dir*throw_strength
 			emit_signal("screen_shake")
 		"damage":
+			emit_signal("hit")
 			damage_timer = damage_time
 			#emit_signal("screen_shake")
+		"dead":
+			$sprite.animation = "death"
+			$dead.play()
+			velocity = Vector2()
+			dead_timer = 1
+			#deathanimation
+
 func leave(state):
 	match state:
 		"attack":
@@ -121,6 +137,11 @@ func execute_passive(delta):
 	var state = passive_state[0]
 	
 	match state:
+		"dead":
+			if dead_timer > 0:
+				dead_timer -= delta
+			if dead_timer <= 0:
+				emit_signal("player_death")
 		"default":
 			$sprite.modulate = Color(1, 1, 1, 1)
 			if not Input.is_action_pressed("block"):
@@ -235,11 +256,13 @@ func _ready():
 
 
 func _physics_process(delta):
+	if display_hp != hp:
+		display_hp -= delta*hp_speed*sign(display_hp - hp)
 	move_and_slide(velocity)
 	execute_active(delta)
 	execute_passive(delta)
-	if hp <= 0:
-		emit_signal("player_death")
+	if display_hp <= 0:
+		push_passive("dead")
 
 
 func _on_crab_spawn_attack(pos):
@@ -273,3 +296,5 @@ func _on_crab_heavy_attack(rect):
 
 func _on_potion_heal():
 	hp += 15
+	clamp(hp, hp, max_hp)
+

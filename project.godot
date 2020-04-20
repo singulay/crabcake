@@ -16,7 +16,9 @@ _global_script_class_icons={
 [application]
 
 config/name="Crabcake"
-run/main_scene="res://Level/Level.tscn"
+run/main_scene="res://game.tscn"
+boot_splash/image="res://sprites/spr_crab.png"
+config/icon="res://sprites/spr_crab.png"
 
 [display]
 
@@ -94,4 +96,5 @@ block={
 
 [rendering]
 
+environment/default_clear_color=Color( 0.133333, 0.12549, 0.203922, 1 )
 environment/default_environment="res://default_env.tres"

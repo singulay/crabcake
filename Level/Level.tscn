@@ -1,16 +1,102 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Camera2D.gd" type="Script" id=2]
 [ext_resource path="res://objects/crab.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Level/Level.gd" type="Script" id=4]
 [ext_resource path="res://objects/Wall.tscn" type="PackedScene" id=5]
-[ext_resource path="res://music/Final Fantasy VII - Fighting [HQ].ogg" type="AudioStream" id=6]
+[ext_resource path="res://music/beauty-flow-by-kevin-macleod-from-filmmusic-io.ogg" type="AudioStream" id=6]
 [ext_resource path="res://objects/flower.tscn" type="PackedScene" id=7]
+[ext_resource path="res://sprites/health_bg.png" type="Texture" id=8]
+[ext_resource path="res://sprites/health_empty.png" type="Texture" id=9]
+[ext_resource path="res://sprites/health_full.png" type="Texture" id=10]
+[ext_resource path="res://sprites/hp.png" type="Texture" id=11]
+[ext_resource path="res://sprites/flower_bar_Animation 1_0.png" type="Texture" id=12]
+[ext_resource path="res://sprites/spr_crab.png" type="Texture" id=13]
+[ext_resource path="res://sprites/flower_frame.png" type="Texture" id=14]
+[ext_resource path="res://Level/heal.gd" type="Script" id=15]
+[ext_resource path="res://sfx/346116__lulyc__retro-game-heal-sound.wav" type="AudioStream" id=16]
 
 [node name="Level" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 4 )
+
+[node name="overlay" type="CanvasLayer" parent="."]
+
+[node name="crabbar" type="MarginContainer" parent="overlay"]
+margin_left = 3.41281
+margin_right = 483.413
+margin_bottom = 42.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="overlay/crabbar"]
+margin_right = 480.0
+margin_bottom = 42.0
+
+[node name="crabportrait" type="TextureRect" parent="overlay/crabbar/hbox"]
+margin_right = 20.0
+margin_bottom = 42.0
+texture = ExtResource( 13 )
+
+[node name="gauge" type="TextureProgress" parent="overlay/crabbar/hbox"]
+margin_left = 24.0
+margin_right = 424.0
+margin_bottom = 42.0
+texture_under = ExtResource( 8 )
+texture_over = ExtResource( 9 )
+texture_progress = ExtResource( 10 )
+
+[node name="frame" type="TextureRect" parent="overlay/crabbar/hbox"]
+margin_left = 428.0
+margin_right = 470.0
+margin_bottom = 42.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="flower" type="TextureRect" parent="overlay/crabbar/hbox/frame"]
+margin_left = 0.94693
+margin_top = 0.946932
+margin_right = 40.9469
+margin_bottom = 42.9469
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hpbar" type="MarginContainer" parent="overlay"]
+margin_top = 232.0
+margin_right = 480.0
+margin_bottom = 272.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="overlay/hpbar"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 470.0
+margin_bottom = 30.0
+
+[node name="TextureRect" type="TextureRect" parent="overlay/hpbar/hbox"]
+margin_right = 20.0
+margin_bottom = 20.0
+texture = ExtResource( 11 )
+
+[node name="gauge" type="TextureProgress" parent="overlay/hpbar/hbox"]
+margin_left = 24.0
+margin_right = 424.0
+margin_bottom = 20.0
+texture_under = ExtResource( 8 )
+texture_over = ExtResource( 9 )
+texture_progress = ExtResource( 10 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 230, 130 )
@@ -25,20 +111,38 @@ position = Vector2( 248, 120 )
 
 [node name="crab" parent="." instance=ExtResource( 3 )]
 pause_mode = 1
-position = Vector2( 352, 72.0502 )
+position = Vector2( 592.829, 123.497 )
 
 [node name="Wall" parent="." instance=ExtResource( 5 )]
-position = Vector2( 8, 72.0502 )
+position = Vector2( 8, 224 )
+
+[node name="Wall4" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 208 )
+
+[node name="Wall5" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 192 )
+
+[node name="Wall6" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 176 )
+
+[node name="Wall7" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 160 )
+
+[node name="Wall8" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 144 )
+
+[node name="Wall9" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 128 )
 
 [node name="Wall2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 8, 88.0502 )
+position = Vector2( 8, 256 )
 
 [node name="Wall3" parent="." instance=ExtResource( 5 )]
-position = Vector2( 8, 104 )
+position = Vector2( 8, 240 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = -24.423
+volume_db = -7.817
 autoplay = true
 
 [node name="flower" parent="." instance=ExtResource( 7 )]
@@ -47,6 +151,18 @@ position = Vector2( 232, 120 )
 [node name="potiontimer" type="Timer" parent="."]
 wait_time = 10.0
 autostart = true
+
+[node name="gameover" type="Timer" parent="."]
+one_shot = true
+
+[node name="gamewin" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="heal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -22.633
+script = ExtResource( 15 )
 [connection signal="attack_hit" from="player" to="crab" method="_on_player_attack_hit"]
 [connection signal="block_success" from="player" to="crab" method="_on_player_block_success"]
 [connection signal="player_death" from="player" to="." method="_on_player_player_death"]
@@ -59,3 +175,5 @@ autostart = true
 [connection signal="spawn_attack" from="crab" to="player" method="_on_crab_spawn_attack"]
 [connection signal="flower_death" from="flower" to="." method="_on_flower_flower_death"]
 [connection signal="timeout" from="potiontimer" to="." method="_on_potiontimer_timeout"]
+[connection signal="timeout" from="gameover" to="." method="_on_gameover_timeout"]
+[connection signal="timeout" from="gamewin" to="." method="_on_gamewin_timeout"]
