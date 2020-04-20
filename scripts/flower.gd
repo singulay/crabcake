@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 
-var max_hp = 300
+var max_hp = 150
 var hp = max_hp
 
 signal flower_death

@@ -2,7 +2,6 @@ extends Node2D
 
 
 func _ready():
-	print("main menu")
 	get_tree().paused = false
 	pass
 	

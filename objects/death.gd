@@ -6,5 +6,4 @@ func _ready():
 
 
 func _on_player_player_death():
-	print("ded")
 	play()

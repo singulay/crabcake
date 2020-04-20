@@ -4,11 +4,11 @@ extends KinematicBody2D
 var max_hp = 100
 var hp = max_hp
 var display_hp = hp
-var hp_speed = 20
+var hp_speed = 30
 
 var movement_speed = 200
 
-var attack_time = 0.1
+var attack_time = 0.3
 var attack_timer
 var attack_timeout = 0.5
 var last_attack = 0
@@ -62,7 +62,7 @@ func enter(state):
 		"attack":
 			$attack.play()
 			velocity = Vector2()
-			#$sprite.animation = "attack" + str(face)
+			$sprite.animation = "attack" + str(face)
 			last_attack = attack_timeout
 			attack_timer = attack_time
 			emit_signal("attack_hit", position + faces[face])
@@ -72,9 +72,13 @@ func enter(state):
 			last_block = block_timeout
 			block_timer = block_time
 		"throw":
-			$sprite.animation = "default"
+			
 			throw_timer = throw_time
 			velocity = -dir*throw_strength
+			if velocity.x >= 0:
+				$sprite.animation = "throw0"
+			else:
+				$sprite.animation = "throw1"
 			emit_signal("screen_shake")
 		"damage":
 			emit_signal("hit")
@@ -138,6 +142,7 @@ func execute_passive(delta):
 	
 	match state:
 		"dead":
+			$sprite.modulate = Color(1, 1, 1, 1)
 			if dead_timer > 0:
 				dead_timer -= delta
 			if dead_timer <= 0:
@@ -162,7 +167,7 @@ func execute_passive(delta):
 				var collision = get_slide_collision(i)
 				if collision.collider.name == "crab" and not get_parent().get_node("crab").dead:
 					dir = (collision.collider.position - position).normalized()
-					#print(collision.collider.position)
+
 					if active_state[0] != "block":
 						push_passive("damage")
 						hp -= 10
@@ -180,6 +185,7 @@ func execute_passive(delta):
 							push_passive("damage")
 							push_passive("throw")
 		"throw":
+			
 			$sprite.modulate = Color(1, 1, 1, 1)
 			throw_timer -= delta
 			velocity -= velocity.normalized()*delta*deacc
@@ -242,11 +248,11 @@ func get_input():
 			face = north
 			
 	velocity = velocity.normalized() * movement_speed
-	if velocity.length() > 0:
-
-		$sprite.animation = "walk" + str(face)
-	else:
-		$sprite.animation = "idle" + str(face)	
+	if not (passive_state[0] in ["attack", "block"]):
+		if velocity.length() > 0:
+			$sprite.animation = "walk" + str(face)
+		else:
+			$sprite.animation = "idle" + str(face)	
 
 	
 
@@ -298,3 +304,7 @@ func _on_potion_heal():
 	hp += 15
 	clamp(hp, hp, max_hp)
 
+
+
+func _on_sprite_animation_finished():
+	pass # Replace with function body.

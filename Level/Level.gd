@@ -1,9 +1,9 @@
 extends Node2D
 
-var level_min_x = -600
-var level_min_y = -600
-var level_max_x = 600
-var level_max_y = 600
+var level_min_x = -0-200
+var level_min_y = -0-200
+var level_max_x = 992+200
+var level_max_y = 992+200
 
 var flower_hp
 var flower_step
@@ -13,15 +13,15 @@ var potion_count = 0
 var won = false
 var gameover = false
 
-const f0 = preload("res://sprites/flower_bar_Animation 1_0.png")
-const f1 = preload("res://sprites/flower_bar_Animation 1_1.png")
-const f2 = preload("res://sprites/flower_bar_Animation 1_2.png")
-const f3 = preload("res://sprites/flower_bar_Animation 1_3.png")
-const f4 = preload("res://sprites/flower_bar_Animation 1_4.png")
-const f5 = preload("res://sprites/flower_bar_Animation 1_5.png")
+const f0 = preload("res://sprites/spr_flowerp6.png")
+const f1 = preload("res://sprites/spr_flowerp7.png")
+const f2 = preload("res://sprites/spr_flowerp8.png")
+const f3 = preload("res://sprites/spr_flowerp9.png")
+const f4 = preload("res://sprites/spr_flowerp10.png")
+const f5 = preload("res://sprites/spr_flowerp11.png")
 var flowers = [f0, f1, f2, f3, f4, f5]
 
-const potion_positions = [Vector2(50, 50), Vector2(150, 150)]
+const potion_positions = [Vector2(128, 128), Vector2(128, 384), Vector2(576, 128), Vector2(576, 384)]
 var taken_potions = []
 
 func get_flower_status():
@@ -65,12 +65,10 @@ func _process(delta):
 
 func gameover():
 	$gameover.start()
-	print("Game Over.")
 	
 func win():
 	$gamewin.start()
-	print("You win.")
-
+	
 func _on_player_player_death():
 	if not gameover:
 		gameover = true
@@ -86,14 +84,15 @@ func _on_crab_crab_death():
 func _on_flower_flower_death():
 	if not gameover:
 		gameover = true
+		$flower2.play()
 		gameover()
 
 
 func _on_potiontimer_timeout():
 	var i = randi()%2
-	if i == 0:
+	if i == 1:
 		var pos = potion_positions[randi()%potion_positions.size()]
-		taken_potions.append(pos)
+
 		spawn_potion(pos)
 
 

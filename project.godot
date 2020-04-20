@@ -15,10 +15,13 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Crabcake"
+config/name="Krabbenritter"
+config/description="Fight the mighty Titan Crab! Protect the flower!"
 run/main_scene="res://game.tscn"
 boot_splash/image="res://sprites/spr_crab.png"
+boot_splash/use_filter=false
 config/icon="res://sprites/spr_crab.png"
+config/windows_native_icon="res://sprites/spr_crab.ico"
 
 [display]
 

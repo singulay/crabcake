@@ -10,8 +10,8 @@ var animation_speed = 2.5
 
 var dmg = 10
 
-const texture1 = preload("res://sprites/crabbody.png")
-const texture2 = preload("res://sprites/crabbody2.png")
+const texture1 = preload("res://sprites/spr_cbody.png")
+const texture2 = preload("res://sprites/spr_cbodyb.png")
 
 const explosion = preload("res://effects/Explosion.tscn")
 const cracks = preload("res://effects/cracks.tscn")
@@ -30,7 +30,7 @@ var allowed_states = ["attack", "walk", "idle", "throw", "dead"]
 var max_hp = 200
 var hp = max_hp
 var display_hp = hp
-var hp_speed = 20
+var hp_speed = 30
 
 var dead = false
 var flipped = false
@@ -239,19 +239,36 @@ func get_input():
 	player_distance = get_parent().get_node("player").position - position - updown * Vector2(0, 25)
 	
 	if state[0] != "dead":
-		
+		if goal in ["corner0", "corner1", "corner2", "corner3"]:
+			if damage_taken > 0:
+				goal = "player"
+			if player_distance.length() > 100:
+				var k = randi()%3
+				if k == 0:
+					goal = "flower"
+				else:
+					goal = "player"
 		if goal == "player":
+			var i = randi()%100
+			if i == 0:
+				goal = "corner" + str(randi()%4)
+				damage_taken = 0
 			if player_distance.length() > 100:
 				goal = "flower"
 				damage_taken = 0
 		if goal == "flower":
+			var i = randi()%100
+			if i == 0:
+				damage_taken = 0
+				goal = "corner" + str(randi()%4)
+
 			if damage_taken >= 20:
 				goal = "player"
 				pop()
 				wait_timer = wait_time
 			if player_distance.length() < 60:
-				var i = randi()%10
-				if i == 0:
+				var j = randi()%10
+				if j == 0:
 					goal = "player"
 			
 		distance = get_parent().get_node(goal).position - position - updown * Vector2(0, 25)
@@ -271,7 +288,7 @@ func attack2_audio():
 				
 func _physics_process(delta):
 	if hp <= 0:
-		push("death")
+		push("dead")
 	if display_hp != hp:
 		display_hp -= delta*hp_speed*sign(display_hp - hp)
 	if wait_timer > 0:

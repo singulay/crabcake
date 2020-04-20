@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/382310__myfox14__game-over-arcade.wav-16d2ab737ea6ac169e9d8f36e10f4321.sample"
+
+[deps]
+
+source_file="res://sfx/382310__myfox14__game-over-arcade.wav"
+dest_files=[ "res://.import/382310__myfox14__game-over-arcade.wav-16d2ab737ea6ac169e9d8f36e10f4321.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
