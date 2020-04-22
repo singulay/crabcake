@@ -82,7 +82,7 @@ func execute(delta):
 	match current_state:
 		"dead":
 			velocity = Vector2()
-			if $AnimationPlayer.current_animation == "walks":
+			if $AnimationPlayer.current_animation in  ["walks", "idle", "throw"]:
 				$AnimationPlayer.current_animation = "death"
 		"idle":
 			if display_hp <= 0:
